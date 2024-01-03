@@ -487,6 +487,275 @@ class ProductController extends Controller
     }
 
 }
+```
 
+app/Http/Controllers/RoleController.php
+
+```bash 
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+
+use DB;
+
+
+class RoleController extends Controller
+{
+     
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+
+         $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:role-create', ['only' => ['create','store']]);
+         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+
+        $roles = Role::orderBy('id','DESC')->paginate(5);
+        return view('roles.index',compact('roles'))->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+
+        $permission = Permission::get();
+        return view('roles.create',compact('permission'));
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required',
+        ]);
+    
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
+    
+        return redirect()->route('roles.index')->with('success','Role created successfully');
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $role = Role::find($id);
+        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
+            ->where("role_has_permissions.role_id",$id)
+            ->get();
+    
+        return view('roles.show',compact('role','rolePermissions'));
+    }
+    
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $role = Role::find($id);
+        $permission = Permission::get();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+    
+        return view('roles.edit',compact('role','permission','rolePermissions'));
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'permission' => 'required',
+        ]);
+    
+        $role = Role::find($id);
+        $role->name = $request->input('name');
+        $role->save();
+    
+        $role->syncPermissions($request->input('permission'));
+    
+        return redirect()->route('roles.index')->with('success','Role updated successfully');
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        DB::table("roles")->where('id',$id)->delete();
+        return redirect()->route('roles.index')->with('success','Role deleted successfully');
+    }
+
+}
+
+```
+
+#### Step 9: Create Blade File
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/c6eb5789-2a83-422f-bb43-37cd335aa4c5)
+
+#### Step 10: Create Seeder For Permissions and AdminUser
+Now, we will add a seeder for permission.
+
+role-list
+role-create
+role-edit
+role-delete
+product-list
+product-create
+product-edit
+product-delete
+Now, run the below command
+
+``` bash
+php artisan make:seeder PermissionTableSeeder
+```
+
+Now, add the code below code in the database/seeds/PermissionTableSeeder.php file.
+
+``` bash
+
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+
+use Spatie\Permission\Models\Permission;
+
+class PermissionTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        //Permissions
+        $permissions = [
+            'role-list',
+            'role-create',
+            'role-edit',
+            'role-delete',
+            'product-list',
+            'product-create',
+            'product-edit',
+            'product-delete',
+            'user-list',
+            'user-create',
+            'user-edit',
+            'user-delete'
+        ];
+       
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
+    }
+}
+
+```
+
+
+Now, run the below command in your terminal
+``` bash
+php artisan db:seed --class=PermissionTableSeeder
+```
+Now, create a new seeder for creating admin users.
+
+```bash
+php artisan make:seeder CreateAdminUserSeeder
+```
+Now, add the below code in the database/seeds/CreateAdminUserSeeder.php file.
+
+``` bash
+
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+class CreateAdminUserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        
+
+        //Admin Seeder
+        $user = User::create([
+            'name' => 'Muzaffer', 
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('password')
+        ]);
+      
+        $role = Role::create(['name' => 'Admin']);
+        $permissions = Permission::pluck('id','id')->all();
+        $role->syncPermissions($permissions);
+        $user->assignRole([$role->id]);
+
+
+    }
+}
+
+```
+##### now data seed into table
+
+```bash
+php artisan db:seed --class=CreateAdminUserSeeder
 
 ```
