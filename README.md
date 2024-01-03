@@ -58,3 +58,14 @@ Optional: The service provider will automatically get registered or you may manu
 	Spatie\Permission\PermissionServiceProvider::class,
 ],
 ```
+
+Now, publish this package as below.
+
+```bash
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+Now you can see the permission.php file and migration. So, we need to run migration using the following command.
+
+```bash
+php artisan migrate
+```
