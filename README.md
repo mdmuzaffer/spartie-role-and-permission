@@ -784,7 +784,8 @@ php artisan db:seed --class=CreateAdminUserSeeder
 
 ![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/930926ff-c108-4a77-9b03-fa566369a5b4)
 
-
+#### This tutorial develope by Muzaffer 
+#### Thanks 
 
 
 
