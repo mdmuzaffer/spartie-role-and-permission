@@ -38,3 +38,23 @@ Now, install npm and run dev for better UI results.
 npm install
 npm run dev
 ```
+
+Step 3: Install spatie/laravel-permission Packages
+Now, we will install the spatie package for ACL.
+
+```bash
+composer require spatie/laravel-permission
+```
+Also, install the form collection package using the below command.
+
+```bash
+composer require laravelcollective/html
+```
+Optional: The service provider will automatically get registered or you may manually add the service provider to your config/app.php file.
+
+```bash
+'providers' => [
+	....
+	Spatie\Permission\PermissionServiceProvider::class,
+],
+```
