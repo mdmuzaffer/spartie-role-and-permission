@@ -164,3 +164,46 @@ class Product extends Model
     ];
 }
 ```
+
+#### Step 6: Add Middleware
+In this step, we will add spatie package provides its in-built middleware, add middleware in the Kernel.php file
+
+```bash
+protected $routeMiddleware = [
+    ....
+    'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+    'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+]
+
+```
+
+#### Step 7: Create Routes
+Now, we will add routes in the web.php file.
+routes/web.php
+
+<?php
+  
+use Illuminate\Support\Facades\Route;
+  
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+  
+  ```bash
+Route::get('/', function () {
+    return view('welcome');
+});
+  
+Auth::routes();
+  
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+  
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('products', ProductController::class);
+});
+
+```
