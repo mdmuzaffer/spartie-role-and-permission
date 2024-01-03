@@ -759,3 +759,33 @@ class CreateAdminUserSeeder extends Seeder
 php artisan db:seed --class=CreateAdminUserSeeder
 
 ```
+
+#### Here login and register form link 
+
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/adc59ded-46ef-4c2b-963d-ab516a703972)
+
+#### After login dashboard is showing here have all option to do for user create, update, show & delete
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/b7d1648b-25d7-49ca-8e5f-320532c23e09)
+
+#### similar of user role create and assign permission
+
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/c907d3f5-d615-469e-8702-898c10749953)
+
+
+##### See the screenshort 
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/b28fb1fd-c28c-450f-b154-ec3d076b8bce)
+
+
+###### Similar create product if have user permission to create a product 
+
+![image](https://github.com/mdmuzaffer/spartie-role-and-permission/assets/58267203/930926ff-c108-4a77-9b03-fa566369a5b4)
+
+
+
+
+
+
