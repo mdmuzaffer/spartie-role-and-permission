@@ -24,11 +24,17 @@ composer create-project laravel/laravel spartie
 #### Step 2: Create Authentication in Laravel 10
 Now, we need to generate auth scaffolding in laravel 10 using the laravel UI command.
 
+```bash
 composer require laravel/ui
+```
 After that, we will Install bootstrap auth using the below command.
 
+```bash
 php artisan ui bootstrap --auth
+```
 Now, install npm and run dev for better UI results. 
 
+```bash
 npm install
 npm run dev
+```
