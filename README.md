@@ -15,7 +15,11 @@
 ## Step 1: Install Laravel 10 For The User Role And Permission Tutorial
 In this step, we will install the laravel 10 application using the below command.
 
+
+\\\
+
 composer create-project laravel/laravel spartie
+
 
 #### Step 2: Create Authentication in Laravel 10
 
