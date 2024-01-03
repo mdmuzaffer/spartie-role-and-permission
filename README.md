@@ -39,7 +39,7 @@ npm install
 npm run dev
 ```
 
-Step 3: Install spatie/laravel-permission Packages
+#### Step 3: Install spatie/laravel-permission Packages
 Now, we will install the spatie package for ACL.
 
 ```bash
@@ -68,4 +68,40 @@ Now you can see the permission.php file and migration. So, we need to run migrat
 
 ```bash
 php artisan migrate
+```
+
+#### Step 4: Create Product Migration
+In this step, we will create migration for the products table.
+
+```bash
+php artisan make:migration create_products_table
+```
+
+```php
+<?php
+
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+
+class CreateProductsTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('detail');
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('products');
+    }
+}
+
 ```
