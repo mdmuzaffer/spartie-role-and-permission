@@ -18,10 +18,10 @@ In this step, we will install the laravel 10 application using the below command
 ```bash
 
 composer create-project laravel/laravel spartie
-less
+
+```
 
 #### Step 2: Create Authentication in Laravel 10
-
 Now, we need to generate auth scaffolding in laravel 10 using the laravel UI command.
 
 composer require laravel/ui
