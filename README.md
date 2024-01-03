@@ -14,3 +14,18 @@
 
 ## Step 1: Install Laravel 10 For The User Role And Permission Tutorial
 In this step, we will install the laravel 10 application using the below command.
+
+composer create-project laravel/laravel spartie
+
+#### Step 2: Create Authentication in Laravel 10
+
+Now, we need to generate auth scaffolding in laravel 10 using the laravel UI command.
+
+composer require laravel/ui
+After that, we will Install bootstrap auth using the below command.
+
+php artisan ui bootstrap --auth
+Now, install npm and run dev for better UI results. 
+
+npm install
+npm run dev
