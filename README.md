@@ -372,14 +372,16 @@ class UserController extends Controller
  
 ```bash
 <?php
-    
+
 namespace App\Http\Controllers;
-    
-use App\Models\Product;
+
 use Illuminate\Http\Request;
-    
+use App\Models\Product;
+
 class ProductController extends Controller
-{ 
+{
+    
+
     /**
      * Display a listing of the resource.
      *
@@ -400,8 +402,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::latest()->paginate(5);
-        return view('products.index',compact('products'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('products.index',compact('products'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
     
     /**
@@ -429,8 +430,7 @@ class ProductController extends Controller
     
         Product::create($request->all());
     
-        return redirect()->route('products.index')
-                        ->with('success','Product created successfully.');
+        return redirect()->route('products.index')->with('success','Product created successfully.');
     }
     
     /**
@@ -470,9 +470,7 @@ class ProductController extends Controller
         ]);
     
         $product->update($request->all());
-    
-        return redirect()->route('products.index')
-                        ->with('success','Product updated successfully');
+        return redirect()->route('products.index')->with('success','Product updated successfully');
     }
     
     /**
@@ -481,13 +479,14 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Product $product)
     {
         $product->delete();
-    
-        return redirect()->route('products.index')
-                        ->with('success','Product deleted successfully');
+        return redirect()->route('products.index')->with('success','Product deleted successfully');
     }
+
 }
+
 
 ```
