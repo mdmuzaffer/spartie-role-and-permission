@@ -183,7 +183,7 @@ protected $middlewareAliases = [
 #### Step 7: Create Routes
 Now, we will add routes in the web.php file.
 routes/web.php
-
+```bash
 <?php
   
 use Illuminate\Support\Facades\Route;
@@ -366,6 +366,4 @@ class UserController extends Controller
     }
 
 }
-
-
 ```
